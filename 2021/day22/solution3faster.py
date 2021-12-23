@@ -3,9 +3,7 @@ import functools, operator
 from functools import cache
 import itertools
 from collections import defaultdict, Counter
-
 import math
-
 
 debug = False
 
@@ -16,15 +14,6 @@ def chunks(lst, n):
     """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
-
-# arr = [(1,2), (3,4), (5,6)]
-
-# for a in chunks(arr, 2):
-# 	print(a)
-
-
-# assert False
-
 
 @cache
 def engulf(r1, r2):
@@ -71,12 +60,11 @@ def combineifposs(pair):
 			return [tuple([min(*a[0:2], *b[0:2]), max(*a[0:2], *b[0:2]), *a[2:] ])]
 	return pair
 
+def size(x, xx, y, yy, z, zz):
+	return (xx-x+1)*(yy-y+1)*(zz-z+1)
 
-# these are both len 2 lists
 @cache
 def compare(r1s, r1e, r2s, r2e):
-	# print(f'compare {r1}, {r2}')
-
 	r1r = range(r1s, r1e+1)
 	r2r = range(r2s, r2e+1)
 
@@ -100,18 +88,10 @@ def compare(r1s, r1e, r2s, r2e):
 		if debug: print(f'r1 {(r1s, r1e)} partially overlaps with r2 {(r2s, r2e)} way 2')
 		return tuple(reversed(partial((r2s, r2e), (r1s, r1e))))
 
-
 	if debug: print(f'r1 {(r1s, r1e)} does not overlap with r2 {(r2s, r2e)}')
 	return tuple([tuple([(r1s, r1e)]), (), tuple([(r2s, r2e)])])
 
-
-
 f = [x for x in open("input.txt").read().strip().split('\n')]
-
-
-def size(x, xx, y, yy, z, zz):
-	return (xx-x+1)*(yy-y+1)*(zz-z+1)
-
 
 dirs = []
 for l in f:
@@ -125,18 +105,13 @@ for l in f:
 		outline.extend(limits)
 	dirs.append(outline)
 
-
-# initially, 70 took real    0m6.500s
-
 cubes = set()
 L = len(dirs)
 i = 0
 for newcube in dirs:
-	sizes = defaultdict(int)
 	print(f'on {i} out of {L}')
 	i += 1
 	cubes2 = set()
-
 	turnon = newcube[0] == 'on'
 
 	# add our new tcube first, check if subsequent cubes overlap,
@@ -147,62 +122,31 @@ for newcube in dirs:
 		xover = compare(*existingcube[0:2], *newcube[1:3])
 		yover = compare(*existingcube[2:4], *newcube[3:5])
 		zover = compare(*existingcube[4:], *newcube[5:])
-		# print(xover)
-		# print(yover)
-		# print(zover)
-
-
-		# TODO is this sufficient? can we more quickly figure out if there definitely isn't overlap?
 
 		noEConly = all(EConly==() for (EConly,_, _) in [xover, yover, zover])
-		if noEConly:
-			pass
-			# print(f'there are no overlaps!') # for the combo {existingcube} and {newcube}')
-			# cubes2.add(existingcube)
+		if noEConly: pass
 		else:
-			# the 1st and 3rd term of each dimen overlap array COULD be
-			# a list of 2 tuples, rather than just a tuple
-
 			# we only need to add the leftmost/middle laps, which belong to existing cube
 			# because we added the newcube
 			cubestoadd = []
 			for ix in range(0,2):
 				for iy in range(0,2):
 					for iz in range(0,2):
-						if ix == iy == iz == 1:
-							#this would mean that we're not looking at ANY leftmost only parts
-							continue
+						# this would mean that we're not looking at ANY leftmost only parts
+						if ix == iy == iz == 1: continue
+							
 						for c in itertools.product(xover[ix],yover[iy],zover[iz]):
 							x,y,z = c
-							# print('xyz is', x, y, z)
-							# print('adding', adding)
 							cubestoadd.append(tuple([*x, *y, *z]))
-							# sizes[size(*x, *y, *z)] += 1
+			# do any easy combinations we can
 			for chunk in chunks(cubestoadd, 2):
 				if len(chunk) == 2:
-					# pass
 					chunk = combineifposs(chunk)
 				cubes2.update(chunk)
-			
-
-	# for k in sorted(sizes.keys())[0:100]:
-	# 	print(f'{k}-sized cuboids exist {sizes[k]} times')
-
-	# print(f'there are {len(cubes2)} in cubes2')
+		
 	cubes = cubes2
 
+print(sum([size(*c) for c in cubes]))
 
 
 
-
-
-print('done!')
-
-total = 0
-for c in cubes:
-	total += size(*c)
-
-print(total)
-# assert 2758514936282235 == total
-
-# TODO this is where we tally up cubes
