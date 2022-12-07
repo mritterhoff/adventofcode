@@ -20,6 +20,7 @@ for ff in f:
 	x,y = [int(b) for b in ff.split(', ')]
 	coords[len(coords)] = (x,y)
 
+
 xmin, xmax = min([x for x,y in coords.values()]), max([x for x,y in coords.values()])
 ymin, ymax = min([y for x,y in coords.values()]), max([y for x,y in coords.values()])
 

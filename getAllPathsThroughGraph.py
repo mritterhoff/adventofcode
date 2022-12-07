@@ -33,4 +33,3 @@ def getAllPaths(path, startNodeName, endNodeName):
 	return rez
 
 pp(getAllPaths(['start'], 'start', 'end'))
-

@@ -1,13 +1,44 @@
-import pp
-import heapq as hq
-import functools, operator
-from functools import cache
-from termcolor import colored
-import itertools as it
+from utils import *
 
-import math
-import numpy as np
-import copy
-from collections import defaultdict, Counter
-from parse import *
+# multiple lines
+f = [x for x in open("input.txt").read().strip().split('\n')]
+# one line
+ff = open("input.txt").read().strip()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -3,19 +3,19 @@ import heapq as hq
 from functools import cache
 from termcolor import colored
 
-lines = [x for x in open("test.txt").read().strip().split('\n')]
+lines = [x for x in open("input.txt").read().strip().split('\n')]
 
 G = []
 for line in lines:
 	G.append([int(x) for x in line])
 
 start = (0,0)
-goal = (C-1,R-1)
+
 
 R = len(G)
 C = len(G[0])
 
-
+goal = (C-1,R-1)
 
 out = []
 for r in range(R):
@@ -72,7 +72,7 @@ def smallestF(fScore,openSet):
 		if score < minF:
 			minF = score
 			minN = n
-	print(f"smallestF returning with {minN} (score {score}) after searching {openSet}")
+	# print(f"smallestF returning with {minN} (score {score}) after searching {openSet}")
 	return n
 
 
@@ -106,8 +106,7 @@ def reconstruct_path(cameFrom, current):
 
 lookedat = set()
 def a_star(start, goal):
-	openSet = set()
-	openSet.add(start) # must be own line
+	openSet = set(start)
 	cameFrom = {}
 
 	# the cost of the cheapest path from start to n currently known.
@@ -134,12 +133,12 @@ def a_star(start, goal):
 		openSet.remove(current)
 
 		ns = neighbors(current)
-		print(f"exploring neighors for {current} which are: {ns}")
+		# print(f"exploring neighors for {current} which are: {ns}")
 
 		for neighbor in ns:
 			tentative_gScore = gScore[current] + d(current, neighbor)
-			print(f"for {neighbor}, value is {G[neighbor[1]][neighbor[0]]} tentative_gScore is {tentative_gScore}")
-			print_everything(reconstruct_path(cameFrom, current), lookedat, neighbor)
+			# print(f"for {neighbor}, value is {G[neighbor[1]][neighbor[0]]} tentative_gScore is {tentative_gScore}")
+			# print_everything(reconstruct_path(cameFrom, current), lookedat, neighbor)
 			if tentative_gScore < gScore.get(neighbor, inf):
 
 				# This path to neighbor is better than any previous one. Record it!
@@ -150,7 +149,7 @@ def a_star(start, goal):
 					openSet.add(neighbor)
 					lookedat.add(neighbor)
 		cycle += 1
-		if cycle < 400 or cycle % 10000 == 0: print(cycle)
+		# if cycle < 400 or cycle % 10000 == 0: print(cycle)
 
 	print('we failed')
 

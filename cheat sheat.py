@@ -1,16 +1,3 @@
-import pp
-import heapq as hq
-import functools, operator
-from functools import cache
-from termcolor import colored
-import itertools as it
-
-import string
-import math
-import numpy as np
-import copy
-from collections import defaultdict, Counter
-from parse import *
 
 list(string.ascii_letters)
 list(string.ascii_lowercase)
@@ -44,13 +31,13 @@ grid = np.full((5, 5), '') # 5 by 5 grid with '' default
 # parse several values from a string that's been formatted. :d returns as int, otherwise str.
 id, dx, dy = parse("#{:d} @ {:d},{:d}", in)
 # or check if match at all:
-rez =  parse("#{:d} @ {:d},{:d}", in)
+rez = parse("#{:d} @ {:d},{:d}", in)
 if rez: print(rez[0])
 
 
 # Dict aka Maps
 # get items in sorted order by keys, largest to smallest
-pp(sorted(dt.items(), key=lambda x: x[1], reverse=True))
+pp(sorted(dict.items(), key=lambda x: x[1], reverse=True))
 
 defaultdict(int)
 defaultdict(list)
@@ -60,6 +47,7 @@ for k,v in some_dict.items():
 
 # Strings
 
+# Get every string with a char missing from OG string
 # 2345, 1345, 1245, 1235, 1234
 str = '12345'
 for i in range(len(str)): print(str[:i] + str[i+1:])
@@ -105,17 +93,6 @@ copy.deepcopy(copy_me)
 
 
 
-
-def neighbors(p):
-	x,y = p
-	dirs = [(1,0), (-1,0), (0,1), (0,-1)]  # right/left/up/down
-	# dirs = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)] # all 8 neighbors
-	ns = []
-	for dx,dy in dirs:
-		if 0<= x+dx < C and 0<= y+dy < R:
-			ns.append((x+dx, y+dy))
-	return ns
-
 def hextobin(hex):
 	m = { '0': '0000',
 	'1': '0001',
@@ -139,6 +116,25 @@ def hextobin(hex):
 
 
 
+
+# solve expressions like "8 * 6 * 6 * 4 * (8 + 5 * 2 + 5 + 6 + 3) * 4"
+# stolen from nirmit
+class N1:
+    def __init__(self, v):
+        self.v = v
+
+    def __add__(self, num):
+        return N1(self.v + num.v)
+
+    def __sub__(self, num):
+        return N1(self.v * num.v)
+
+rsum = 0
+for l in f:
+    out = "".join("N1("+x+")" if x.isdigit() else x for x in l)
+    out = out.replace("*", "-")
+    rsum += eval(out).v
+print(rsum)
 
 
 
