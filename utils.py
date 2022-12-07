@@ -11,6 +11,7 @@ import numpy as np
 from collections import defaultdict, Counter, deque
 from parse import *
 
+np.set_printoptions(linewidth=np.inf)
 inf = float("inf")
 
 
@@ -26,3 +27,17 @@ def ns_8(p, R, C):
 	x,y = p
 	dirs = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)] # all 8 neighbors
 	return [(x+dx, y+dy) for dx,dy in dirs if 0<= x+dx < C and 0<= y+dy < R]
+
+
+
+# 2d tiling of a 2d array, with optional lambda for mutation
+def tileArray(arr, horiz, vert, permuteLambda = lambda aIn,h,v: aIn):
+	out = []	
+	for v in range(vert):		
+		for h in range(horiz):
+			newTile = permuteLambda(arr, h, v)
+			if h == 0: newArrayRow = newTile
+			else: newArrayRow = np.concatenate((newArrayRow, newTile), axis=1)
+		if v == 0: out = newArrayRow
+		else: out = np.concatenate((out, newArrayRow), axis=0)
+	return out
