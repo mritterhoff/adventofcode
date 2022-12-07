@@ -1,4 +1,3 @@
-
 list(string.ascii_letters)
 list(string.ascii_lowercase)
 list(string.ascii_uppercase)	
@@ -30,14 +29,17 @@ grid = np.full((5, 5), '') # 5 by 5 grid with '' default
 
 # parse several values from a string that's been formatted. :d returns as int, otherwise str.
 id, dx, dy = parse("#{:d} @ {:d},{:d}", in)
-# or check if match at all:
+# or check if match at all, will be None or an array
 rez = parse("#{:d} @ {:d},{:d}", in)
-if rez: print(rez[0])
 
 
 # Dict aka Maps
+
 # get items in sorted order by keys, largest to smallest
 pp(sorted(dict.items(), key=lambda x: x[1], reverse=True))
+
+# get value from dict with default. coul use defaultdict instead too
+dict.get(6, 0) 
 
 defaultdict(int)
 defaultdict(list)
@@ -113,8 +115,6 @@ def hextobin(hex):
 	out = ""
 	for x in hex: out += m[x]
 	return out
-
-
 
 
 # solve expressions like "8 * 6 * 6 * 4 * (8 + 5 * 2 + 5 + 6 + 3) * 4"
