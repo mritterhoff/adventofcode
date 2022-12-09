@@ -1,3 +1,5 @@
+# https://adventofcode.com/2022/day/8
+
 import numpy as np
 
 f = [x for x in open("input.txt").read().strip().split('\n')]
@@ -8,7 +10,7 @@ def scoreP2(v, arr):
 		if el >= v: return i + 1
 	return len(arr)
 
-p1, p2 = 2*trees.shape[0] + 2*trees.shape[1] - 4, 0
+p1, p2 = 2*(trees.shape[0] + trees.shape[1]) - 4, 0 
 for x in range(1, trees.shape[0]-1):
 	for y in range(1, trees.shape[1]-1):
 		score1 = trees[y][x] > max(trees[y,:x])
