@@ -29,16 +29,14 @@ def solve(knotCount):
 					thisKnot = addTupes(thisKnot, dirs[d])
 					knotCoord[k] = thisKnot
 
-				if manDist(thisKnot, nextKnot) >= 2:
-					moveX, moveY = 0, 0
-					if thisKnot[0] == nextKnot[0] or thisKnot[1] == nextKnot[1]:
-						moveX = sign(thisKnot[0] - nextKnot[0])
-						moveY = sign(thisKnot[1] - nextKnot[1])
-					else:
-						if manDist(thisKnot, nextKnot) > 2:
-							moveX = sign(thisKnot[0] - nextKnot[0])
-							moveY = sign(thisKnot[1] - nextKnot[1])
-					nextKnot = addTupes(nextKnot, (moveX, moveY))
+				moveX, moveY = 0, 0
+				if manDist(thisKnot, nextKnot) == 2 and (thisKnot[0] == nextKnot[0] or thisKnot[1] == nextKnot[1]):
+					moveX = sign(thisKnot[0] - nextKnot[0])
+					moveY = sign(thisKnot[1] - nextKnot[1])
+				elif manDist(thisKnot, nextKnot) > 2:
+					moveX = sign(thisKnot[0] - nextKnot[0])
+					moveY = sign(thisKnot[1] - nextKnot[1])
+				nextKnot = addTupes(nextKnot, (moveX, moveY))
 				
 				knotCoord[k+1] = nextKnot
 				if k == knotCount-2: tailWasHere.add(nextKnot)

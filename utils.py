@@ -14,7 +14,6 @@ from parse import *
 np.set_printoptions(linewidth=np.inf)
 inf = float("inf")
 
-
 # Return 2-d neighbors of point (as pair) with bounds.
 # p, C, R = (1,1), 5, 5 
 # print(ns((1,1), R, C))
@@ -41,3 +40,12 @@ def tileArray(arr, horiz, vert, permuteLambda = lambda aIn,h,v: aIn):
 		if v == 0: out = newArrayRow
 		else: out = np.concatenate((out, newArrayRow), axis=0)
 	return out
+
+def sign(v):
+	return int((v)/abs(v))
+
+def manDist(t1, t2):
+	return abs(t1[0] - t2[0]) + abs(t1[1] - t2[1])
+
+def addTupes(t1, t2):
+	return (t1[0] + t2[0], t1[1] + t2[1])

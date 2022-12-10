@@ -16,10 +16,10 @@ from parse import *
 # p2 12/5/22 58m
 
 def cost(char):
-	return list(string.ascii_uppercase).index(char)+1 + 60
+	return list(string.ascii_uppercase).index(char)+1 #+ 60
 	# return list(string.ascii_uppercase).index(char)+1
 
-f = [x for x in open("input.txt").read().strip().split('\n')]
+f = [x for x in open("test.txt").read().strip().split('\n')]
 print(f)
 
 dep = defaultdict(list)
@@ -78,13 +78,16 @@ def find_next(path, keys, map, status_keys):
 # map the letter the number of seconds remaining for it, 
 # key count maxes at 60
 
-maxWorkers = 5
+maxWorkers = 2
 path = []
 status = defaultdict(int)
 time = 0
 
-while len(allkeys) > 0:
-	# we keep as many workers busy as possible
+out = ["second", 'w1', 'w2', 'done']
+
+
+
+def assignWorkers():
 	addmore = True
 	while addmore:
 		foundme = find_next(path, allkeys, dep, status.keys())
@@ -94,17 +97,31 @@ while len(allkeys) > 0:
 			if len(hangups) == 0:
 				if len(status) == maxWorkers:
 					addmore = False
-					print("workers maxed out")
+					# print("workers maxed out")
 				else:
 					status[foundme] = cost(foundme)
-					print('foundme:', foundme)
+					# print('foundme:', foundme)
 			else:
 				addmore = False
-				print('hungup')
-				
+				# print('hungup')
 		else:
 			addmore = False
-			print("stuck")
+			# print("stuck")
+
+
+
+while len(allkeys) > 0:
+	# we keep as many workers busy as possible
+	assignWorkers()
+
+	out.append([
+		time,
+		"." if len(status) < 1 else list(status)[0], 
+		"." if len(status) < 2 else list(status)[1],
+		"".join(path)])
+	time += 1
+	print('time:',time)
+
 
 	# a second passes 
 	popus = []
@@ -115,10 +132,10 @@ while len(allkeys) > 0:
 		
 	
 	# everyone who needs to be popped, is. 
-	pp(status)
-	print('path', path)
-	print('allkeys:',allkeys)
-	print('popus:',popus)
+	# pp(status)
+	# print('path', path)
+	# print('allkeys:',allkeys)
+	# print('popus:',popus)
 	for killme in popus:
 		status.pop(killme)
 		path.append(killme)
@@ -126,9 +143,9 @@ while len(allkeys) > 0:
 		for k,v in dep.items():
 			if killme in v:
 				v.remove(killme)
-	time += 1
-	print('time:',time)
 
+
+pp(out)
 pp(allkeys)
 rez = "".join(path)
 
