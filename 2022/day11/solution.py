@@ -1,12 +1,9 @@
 import sys 
 sys.path.append('../..')
 from utils import *
-import inspect
 
 # multiple lines
 f = [x for x in open("input.txt").read().strip().split('\n\n')]
-
-# p1 35, p2 clock 2:24t
 
 class N1:
 	def __init__(self, num):
@@ -50,16 +47,15 @@ def doOp2(old, op):
 
 
 def parseMonkeys(str):
-	global monkeys
 	global part
 	lines = str.split('\n')
 
 	monk = {}
 	
 	if part == 'p1':
-		monk['list'] = [int(x) for x in lines[1].split(':')[1].split(',')]
+		worryList.append([int(x) for x in lines[1].split(':')[1].split(',')])
 	else:
-		monk['list'] = [N1(int(x)) for x in lines[1].split(':')[1].split(',')]
+		worryList.append([N1(int(x)) for x in lines[1].split(':')[1].split(',')])
 
 	monk['op'] = [x for x in parse('  Operation: new = {} {} {}', lines[2])]
 	if monk['op'][2] != 'old':
@@ -78,10 +74,10 @@ def solve(rounds):
 	for monkStr in f: parseMonkeys(monkStr)
 
 	for rnd in range(rounds):
-		for mIdx in range(len(monkeys)):
+		for mIdx in range(len(worryList)):
 			monk = monkeys[mIdx]
-			while (len(monk['list']) > 0):
-				el = monk['list'].pop()
+			while len(worryList[mIdx]) > 0:
+				el = worryList[mIdx].pop()
 				
 				if part == 'p1':
 					el = doOp(el, monk['op']) // 3
@@ -91,26 +87,24 @@ def solve(rounds):
 					testPassed = el.test(monk['divTest'])
 
 				if testPassed:
-					monkeys[monk['divTrue']]['list'].append(el)
+					worryList[monk['divTrue']].append(el)
 				else:
-					monkeys[monk['divFalse']]['list'].append(el)
+					worryList[monk['divFalse']].append(el)
 
 				inspectCount[mIdx] += 1
 
 	s = list(reversed(sorted(inspectCount.values())))
 	print(part, s[0] * s[1])
 
-worryList = []
-
-inspectCount = defaultdict(int)
 monkeys = {}
+
+worryList = []
+inspectCount = defaultdict(int)
 part = 'p1'
 solve(20)
 
 worryList = []
-
 inspectCount = defaultdict(int)
-monkeys = {}
 part = 'p2'
 solve(10000)
 
