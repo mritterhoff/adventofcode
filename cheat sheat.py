@@ -13,6 +13,9 @@ list(some_set)[0]
 s1.intersection(s2)
 s1.issuperset(s2)
 
+# copy for objects
+copy.deepcopy(copy_me)
+
 # get index and val from list
 for idx, val in enumerate(lst):
 
@@ -89,7 +92,7 @@ class Board:
 	def __str__(self):
 		return "debug info:" + self.array
 
-copy.deepcopy(copy_me)
+
 
 
 

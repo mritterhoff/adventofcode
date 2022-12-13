@@ -15,17 +15,22 @@ np.set_printoptions(linewidth=np.inf)
 inf = float("inf")
 
 # Return 2-d neighbors of point (as pair) with bounds.
-# p, C, R = (1,1), 5, 5 
-# print(ns((1,1), R, C))
-def ns_4(p, R, C):
-	x,y = p
-	dirs = [(1,0), (-1,0), (0,1), (0,-1)]  # right/left/up/down
-	return [(x+dx, y+dy) for dx,dy in dirs if 0<= x+dx < C and 0<= y+dy < R]
+def ns4RC(p, R, C):
+	dirs = [(1,0), (-1,0), (0,1), (0,-1)]  # up/down/right/left
+	return [(p[0]+dr, p[1]+dc) for dr,dc in dirs if 0<= p[0]+dr < R and 0<= p[1]+dc < C]
 
-def ns_8(p, R, C):
-	x,y = p
+def ns8RC(p, R, C):
 	dirs = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)] # all 8 neighbors
-	return [(x+dx, y+dy) for dx,dy in dirs if 0<= x+dx < C and 0<= y+dy < R]
+	return [(p[0]+dr, p[1]+dc) for dr,dc in dirs if 0<= p[0]+dr < R and 0<= p[1]+dc < C]
+
+# Return 2-d neighbors of point (as pair) with bounds.
+def ns4XY(p, maxX, maxY):
+	dirs = [(1,0), (-1,0), (0,1), (0,-1)]  # right/left/up/down
+	return [(p[0]+dx, p[1]+dy) for dx,dy in dirs if 0<= p[0]+dx < maxX and 0<= p[1]+dy < maxY]
+
+def ns8XY(p, maxX, maxY):
+	dirs = [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)] # all 8 neighbors
+	return [(p[0]+dx, p[1]+dy) for dx,dy in dirs if 0<= p[0]+dx < maxX and 0<= p[1]+dy < maxY]
 
 
 

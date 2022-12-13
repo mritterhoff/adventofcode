@@ -33,134 +33,35 @@ def ns_4(p, R, C):
 	return out
 
 minLen = 100000
-shortPath = []
 
 def getAllPaths(path, curR, curC):
 	global minLen
-	global shortPath
-	# print('path so far', path)
 	rez=[]
 	cur_node = path[-1]
 
 	if grid[curR][curC] == 'E':
-		# print('we found it!', curR, curC)
-		# print(path)
 		if len(path) < minLen:
-			shortPath = path
 			minLen = len(path)
-			print('minLen')
-		return [path]
+			print('minLen', minLen)
+		# return [path]
 
 	nextNodes = ns_4((curR, curC), grid.shape[0], grid.shape[1])
-	# print((curR, curC), nextNodes)
 	for nextNode in nextNodes:
-		# print('searching', nextNode)
 		if grid[nextNode[0]][nextNode[1]] == 'S': continue
-
+		if nextNode in path: continue
 		nextHeight = charList.index('z') if grid[nextNode[0]][nextNode[1]] == 'E' else charList.index(grid[nextNode[0]][nextNode[1]])
 		startHeight = charList.index('a') if grid[nextNode[0]][nextNode[1]] == 'S' else charList.index(grid[curR][curC])
 		if nextHeight > startHeight + 1:
 			continue
 
-		if nextNode in path: continue
-		subPath = copy.deepcopy(path)
-		subPath.append(nextNode)
-		getAllPaths(subPath, nextNode[0], nextNode[1])
+		
+		path.append(nextNode)
+		getAllPaths(path, nextNode[0], nextNode[1])
+		path.pop()
 
 getAllPaths([s], s[0], s[1])
 
-print(shortPath)
-print(len(shortPath)-1)
-
-
-
-
-# raise
-
-
-# state = np.asarray([[int(el) for el in row] for row in f])
-# print(state)
-
-# R,C = state.shape
-# print('rows:', R, ' cols:', C)
-
-# hist = [state]
-# for gen in range(0, 2):
-# 	print('gen:', gen+1)
-# 	old = hist[-1]
-# 	new = np.full((R,C), 0)
-
-# 	for iy in range(R):
-# 		for ix in range(C):
-# 			 for pt in ns_8((ix, iy), R, C):
-# 		 	pp(pt)
-
-# 	hist.append(new)
-# 	pp(old)
-# 	pp(new)
-
-
-
-# raise
-# print(f)
-
-# nodes = set()
-# edges = defaultdict(list)
-
-# for x in f:
-# 	a, b = x.split('-')
-# 	nodes.add(a)
-# 	nodes.add(b)
-# 	edges[a].append(b)
-# 	edges[b].append(a)
-
-# print(nodes)
-# print(edges)
-
-# def getAllPaths(path, startNodeName, endNodeName):
-# 	rez=[]
-# 	cur_node = path[-1]
-
-# 	if cur_node == endNodeName: return [path]
-
-# 	for nextNode in edges[cur_node]:
-# 		if nextNode == startNodeName: continue
-# 		if nextNode in path: continue
-# 		subPath = copy.deepcopy(path)
-# 		subPath.append(nextNode)
-# 		rez.extend(getAllPaths(subPath, startNodeName, endNodeName))
-
-# 	return rez
-
-# pp(getAllPaths(['start'], 'start', 'end'))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# print(shortPath)
+print(minLen-1)
 
 
