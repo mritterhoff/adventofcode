@@ -1,22 +1,16 @@
 import sys 
 sys.path.append('../..')
 from utils import *
-from functools import cmp_to_key
 
 f = [x for x in open("input.txt").read().strip().split('\n\n')]
 
 pairs = [x.split('\n') for x in f]
 
-allVals = []
-for p in pairs:
-	allVals.append(p[0])
-	allVals.append(p[1])
+pp(pairs)
 
-
-allVals.append('[[2]]')
-allVals.append('[[6]]')
 
 count = 0
+
 
 
 def compare(left, right):
@@ -24,6 +18,9 @@ def compare(left, right):
 
 	ltype, rtype = type(left), type(right)
 
+
+
+	print('comparing', left, right)
 	try:
 		if ltype == int and rtype == int:
 			if left > right:
@@ -54,27 +51,32 @@ def compare(left, right):
 			return False
 
 
-# for idx, pair in enumerate(pairs):
-# 	idx = idx + 1
-# 	# if idx == 2:
-# 	left = pair[0]
-# 	right = pair[1]
-# 	if compare(eval(left), eval(right)):
-# 		count += idx
-# 		print('good', idx, left, right)
-
-def meth(a, b):
-	rez = compare(eval(a), eval(b))
-	return -1 if rez else 1
 
 
-allVals = sorted(allVals, key=cmp_to_key(meth))
+for idx, pair in enumerate(pairs):
+	idx = idx + 1
+	# if idx == 2:
+	left = pair[0]
+	right = pair[1]
+	if compare(eval(left), eval(right)):
+		count += idx
+		print('good', idx, left, right)
 
-pp(allVals)
 
-i1 = allVals.index('[[2]]') + 1
-i2 = allVals.index('[[6]]') + 1
-print(i1 * i2)
+
+print(count)
+
+
+# not 6104,5893
+
+
+
+
+
+
+
+
+
 
 
 
