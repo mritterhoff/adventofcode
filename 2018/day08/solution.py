@@ -44,7 +44,7 @@ def propNode(arr):
 	else:
 		splitNode(contents, quantChildCnt)
 
-	return (len(contents))
+	return len(contents)
 
 propNode(arr)
 
