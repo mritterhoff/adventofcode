@@ -12,6 +12,9 @@ from collections import defaultdict, Counter, deque
 from parse import *
 from functools import cmp_to_key
 
+import sys
+sys.setrecursionlimit(100000)
+
 np.set_printoptions(linewidth=np.inf)
 inf = float("inf")
 
